@@ -1,5 +1,28 @@
 # 🐳 Docker
 
+- [🐳 Docker](#-docker)
+  - [Install Docker Desktop](#install-docker-desktop)
+  - [Once installed:](#once-installed)
+    - [In a terminal window, run docker --version, and paste the output in the chat. From v20 onwards is fine.](#in-a-terminal-window-run-docker---version-and-paste-the-output-in-the-chat-from-v20-onwards-is-fine)
+    - [Run Docker Desktop application and check the bottom left for the status.](#run-docker-desktop-application-and-check-the-bottom-left-for-the-status)
+    - [Note:](#note)
+    - [Create an account on Docker Hub. Doesn't matter the OS you are using on your local machine.](#create-an-account-on-docker-hub-doesnt-matter-the-os-you-are-using-on-your-local-machine)
+    - [In Docker Desktop, login using the account you created on Docker Hub.](#in-docker-desktop-login-using-the-account-you-created-on-docker-hub)
+- [Task: Research microservices, containers and Docker](#task-research-microservices-containers-and-docker)
+    - [Research and document...](#research-and-document)
+- [Differences between virtualisation and containerisation](#differences-between-virtualisation-and-containerisation)
+    - [What is usually included in a container vs virtual machine?](#what-is-usually-included-in-a-container-vs-virtual-machine)
+    - [Benefits of each, especially a virtual machine over the traditional architecture](#benefits-of-each-especially-a-virtual-machine-over-the-traditional-architecture)
+- [🏗️ Microservices](#️-microservices)
+    - [What are they?](#what-are-they)
+    - [How are they made possible?](#how-are-they-made-possible)
+    - [Benefits](#benefits)
+- [🐳 Docker](#-docker-1)
+    - [❓ What is it](#-what-is-it)
+    - [🔄 Alternatives](#-alternatives)
+    - [⚙️ How it works (Docker architecture/API)](#️-how-it-works-docker-architectureapi)
+    - [💡 Success story using Docker](#-success-story-using-docker)
+
 ![alt text](images/docker-architecture.jpg)
 
 ## Install Docker Desktop
