@@ -38,6 +38,34 @@
   - [Step 6: Push the Image to Docker Hub](#step-6-push-the-image-to-docker-hub)
   - [Step 7: Run the Custom Image from Docker Hub](#step-7-run-the-custom-image-from-docker-hub)
   - [Step 8: Clean Up and Re-run from Docker Hub](#step-8-clean-up-and-re-run-from-docker-hub)
+- [Task: Run Sparta test app in a container](#task-run-sparta-test-app-in-a-container)
+  - [Step 1 : Make a folder](#step-1--make-a-folder)
+  - [Step 2 : Dockerfile](#step-2--dockerfile)
+  - [Step 3 : Run the docker image](#step-3--run-the-docker-image)
+  - [Step 4 : Run the container](#step-4--run-the-container)
+  - [Step 5 : Push image](#step-5--push-image)
+- [Task: Research Docker Compose](#task-research-docker-compose)
+  - [Why use it?](#why-use-it)
+  - [How to use it](#how-to-use-it)
+    - [What do you need to install for it to work?](#what-do-you-need-to-install-for-it-to-work)
+    - [How to store your docker compose file?](#how-to-store-your-docker-compose-file)
+    - [Find out about these docker compose commands to:](#find-out-about-these-docker-compose-commands-to)
+      - [manage your application](#manage-your-application)
+        - [start the application (without detached mode)](#start-the-application-without-detached-mode)
+        - [start the application (in detached mode)](#start-the-application-in-detached-mode)
+          - [what is the difference between running your application with or without detached mode](#what-is-the-difference-between-running-your-application-with-or-without-detached-mode)
+        - [stop the application](#stop-the-application)
+      - [run your application in detached mode](#run-your-application-in-detached-mode)
+      - [check services running with docker compose](#check-services-running-with-docker-compose)
+      - [view logs in real-time](#view-logs-in-real-time)
+      - [view docker compose images](#view-docker-compose-images)
+- [Task: Use Docker Compose to run app and database containers](#task-use-docker-compose-to-run-app-and-database-containers)
+  - [Step 1 : make the directory](#step-1--make-the-directory)
+  - [Step 2 : create the docker-compose-yml](#step-2--create-the-docker-compose-yml)
+  - [Step 3 : run docker-compose commands](#step-3--run-docker-compose-commands)
+  - [Step 4 : check if the containers are running:](#step-4--check-if-the-containers-are-running)
+  - [Step 5: Manually Seed the Database](#step-5-manually-seed-the-database)
+  - [Step 6 : automatically seed the database](#step-6--automatically-seed-the-database)
 
 ![alt text](images/docker-architecture.jpg)
 
@@ -123,6 +151,9 @@ docker --version
 - 📡 **APIs**: Microservices architecture relies on APIs for communication between services.
 - 🚀 **DevOps and CI/CD** : DevOps practices, continuous integration/continuous deployment (CI/CD), and orchestration tools like Kubernetes support the management and deployment of microservices.
   
+    ![alt text](images/microservice.jpg)
+
+
 ### Benefits
 - 📈 **Scalability**: Services can be scaled independently, allowing resources to be allocated based on each service’s demand.
 - 🔄 **Flexibility in Development**: Teams can work on different services simultaneously and in different languages.
@@ -372,64 +403,68 @@ If time:
 
 ## Step 1: Create a New Directory
 1. Open your terminal
-```bash
-mkdir tech264-mod-nginx-dockerfile
-```
+    ```bash
+    mkdir tech264-mod-nginx-dockerfile
+    ```
 2. Navigate into the new folder
-```bash
-cd tech264-mod-nginx-dockerfile
-```
+    ```bash
+    cd tech264-mod-nginx-dockerfile
+    ```
 
 ## Step 2: Create a Custom index.html File
 1. index.html
-```html
-<!-- index.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Custom Nginx Page</title>
-</head>
-<body>
-    <h1>Welcome to My Custom Nginx Page!</h1>
-    <p>This page has been automated using Dockerfile.</p>
-</body>
-</html>
-```
+    ```html
+    <!-- index.html -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Custom Nginx Page</title>
+    </head>
+    <body>
+        <h1>Welcome to My Custom Nginx Page!</h1>
+        <p>This page has been automated using Dockerfile.</p>
+    </body>
+    </html>
+    ```
 
-2. Save this file in the tech2xx-mod-nginx-dockerfile directory.
+2. Save this file in the `tech2xx-mod-nginx-dockerfile` directory.
    
 ## Step 3: Create a Dockerfile
 
 1. Dockerfile
-```dockerfile
-# Use the nginx base image
-FROM nginx:latest
+    ```dockerfile
+    # Use the nginx base image
+    FROM nginx:latest
 
-# Copy the custom index.html to the default nginx html directory
-COPY index.html /usr/share/nginx/html/index.html
-
-```
+    # Copy the custom index.html to the default nginx html directory
+    COPY index.html /usr/share/nginx/html/index.html
+    ```
+    ❓ If you modify the index.html e.g add an image you need to add that image in the dockerfile too 
+    - (COPY cat-underwater.gif /usr/share/nginx/html/cat-underwater.gif)
 ## Step 4: Build the Docker Image
 1. docker build command
     ```bash
-    docker build -t tech2xx-nginx-auto:v1 .
+    docker build -t tech264-nginx-cat:v1 .
     ```
-    - `-t` tags the image with a name `(tech264-nginx-auto)` and version `(v1)`.
+    - `-t` tags the image with a name `(tech264-nginx-cat)` and version `(v1)`.
     - `.` indicates the current directory as the build context.
-  
+   
+   **EXTRA**: Rebuild the Docker Image
+   ```bash
+   docker build --no-cache -t tech226-nginx-cat:v1 .
+   ```
 
-  docker build -t tech264-nginx-auto:v1 .
 
 ## Step 5: Run the Custom Container
 1. Run the container
     ```bash
-    docker run -d -p 80:80 tech2xx-nginx-auto:v1
+    docker run -d -p 80:80 tech2xx-nginx-cat:v1
     ```
 2. Verify the custom page by visiting `http://localhost` or `http://127.0.0.1` in your browser.
 
-## Step 6: Push the Image to Docker Hub
 
+## Step 6: Push the Image to Docker Hub
 1. Log in to Docker Hub
     ```bash
     docker login
@@ -437,25 +472,369 @@ COPY index.html /usr/share/nginx/html/index.html
 
 2. Tag the image
     ```bash
-    docker tag tech264-nginx-auto:v1 your_dockerhub_username/tech264-nginx-auto:v1
+    docker tag tech264-nginx-cat:v1 your_dockerhub_username/tech264-nginx-cat:v1
     ```
 
 3. Push the image
    ```bash
-   docker push your_dockerhub_username/tech264-nginx-auto:v1
+   docker push your_dockerhub_username/tech264-nginx-cat:v1
    ```
 
 ## Step 7: Run the Custom Image from Docker Hub
 ```bash
-docker run -d -p 80:80 your_dockerhub_username/tech264-nginx-auto:v1
+docker run -d -p 80:80 your_dockerhub_username/tech264-nginx-cat:v1
 ```
 
 ## Step 8: Clean Up and Re-run from Docker Hub
 1. Remove the local image
     ```bash
-    docker rmi tech264-nginx-auto:v1
+    docker rmi tech264-nginx-cat:v1
     ```
 2. Re-run the container to pull it from Docker Hub
     ```bash
-    docker run -d -p 80:80 your_dockerhub_username/tech264-nginx-auto:v1
+    docker run -d -p 80:80 your_dockerhub_username/tech264-nginx-cat:v1
     ```
+
+    ![alt text](images/cat-docker.jpg)
+
+
+
+
+# Task: Run Sparta test app in a container
+
+```Aim: Run node app in Docker container
+Duration: 1 hour, then finish documentation
+Steps for Dockerfile:
+
+# from which image
+
+# label
+
+# set the default working directory to /usr/src/app
+
+# copy app folder (to same place as Dockerfile, then copy to default location in container)
+# COPY app /usr/src/app
+# COPY package*.json ./
+
+# install dependencies with npm
+
+# expose port
+
+# CMD [node app.js or npm start]
+```
+
+
+## Step 1 : Make a folder
+```bash
+mkdir tech264-docker-sparta-test-app
+```
+
+## Step 2 : Dockerfile
+```bash
+nano dockerfile
+```
+
+```dockerfile
+# node.js version 20
+FROM node:20-alpine3.20 
+
+# label maintainer
+LABEL maintainer="Maria"
+
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy the entire app folder into the container’s working directory
+COPY app /usr/src/app 
+
+# another option to coppy the app
+# COPY app .
+
+# Copy package.json and package-lock.json if present for installing dependencies
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Expose the port the app will run on
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "app.js"]
+
+# another way to start
+# CMD ["npm", "start"]
+```
+
+## Step 3 : Run the docker image
+```bash
+docker build -t sparta-test-app:v1-no-db .
+```
+
+## Step 4 : Run the container 
+```bash
+docker run -d -p 3000:3000 sparta-test-app:v1-no-db
+```
+
+## Step 5 : Push image
+- log in to docker hub
+    ```bash
+    docker login
+    ```
+- tag the Image
+    ```bash
+    docker tag  sparta-test-app:v1-no-db corinnai/sparta-test-app:v1-no-db
+    ```
+
+- push the image to docker hub
+    ```bash
+    docker push corinnai/sparta-test-app:v1-no-db
+    ```
+
+- download the image from dockerhub
+    ```bash
+    docker run -d -p 3000:3000 corinnai/sparta-test-app:v1-no-db
+    ```
+
+
+# Task: Research Docker Compose
+
+## Why use it?
+- Docker Compose is used to define and manage multi-container Docker applications. When an application has multiple services (e.g., a web server, database, and backend), Compose allows you to define all services in a single configuration file (`docker-compose.yml`) and manage them together, making setup and deployment easier. 
+- Docker Compose is beneficial because it:
+
+    - Simplifies multi-container Docker environments.
+    - Allows version-controlled configurations for reproducible environments.
+    - Provides easy orchestration of service dependencies.
+    - Automates the setup of complex applications with a single command
+  
+## How to use it
+- Compose can be used in many different ways.
+  - **Development environments**
+    - Using the Compose command line tool you can create and start one or more containers for each dependency with a single command (`docker compose up`).
+  - **Automated testing environments**: Automated end-to-end testing requires an environment in which to run tests. Compose provides a convenient way to create and destroy isolated testing environments for your test suite.
+    ```bash
+    $ docker compose up -d
+    $ ./run_tests
+    $ docker compose down
+    ```
+  - **Single host deployments**: Compose has traditionally been focused on development and testing workflows, but with each release we're making progress on more production-oriented features.
+
+### What do you need to install for it to work?
+
+- To use Docker Compose, you need:
+    - **Docker** installed on your machine.
+    - **Docker Compose** itself. For Docker Desktop users, Docker Compose is already included. If using Docker Engine, you may need to install Docker Compose separately.
+
+### How to store your docker compose file?
+- The Docker Compose file, docker-compose.yml, should be stored in the root directory of your project. This file defines all the services, networks, and volumes for your application.
+
+    ```yaml
+    version: '3'
+    services:
+        web:
+          image: nginx:latest
+          ports:
+            - "80:80"
+        database:
+          image: mysql:5.7
+          environment:
+            MYSQL_ROOT_PASSWORD: example
+    ```
+
+### Find out about these docker compose commands to:
+#### manage your application
+##### start the application (without detached mode)
+- To start the application without detached mode (in the foreground):
+    ```bash
+    docker-compose up
+    ```
+##### start the application (in detached mode)
+- To start the application in detached mode (running in the background):
+    ```bash
+    docker-compose up -d
+    ```
+###### what is the difference between running your application with or without detached mode
+- **Without Detached Mode**: Runs in the foreground and displays logs in real-time. The terminal is occupied by the running application and must remain open.
+- **With Detached Mode**: Runs in the background, freeing up the terminal for other tasks. To view logs, you must use separate commands (docker-compose logs).
+
+##### stop the application
+- To stop all services started by Docker Compose:
+    ```bash
+    docker-compose down
+    ```
+    - This command stops and removes the containers defined in the docker-compose.yml file.
+
+#### run your application in detached mode
+```bash
+docker-compose up -d
+```
+#### check services running with docker compose
+```bash
+docker-compose ps
+```
+#### view logs in real-time
+- To view real-time logs for all services:
+    ```bash
+    docker-compose logs -f
+    ```
+- To view logs for a specific service:
+    ```bash
+    docker-compose logs -f <service_name>
+    ```
+#### view docker compose images
+```bash
+docker-compose images
+```
+
+
+
+# Task: Use Docker Compose to run app and database containers
+```bash
+Do we have images we need?
+    - For the Node app, we have a microservice image
+    - For the Mongo database image, you will need to find the right version to use.
+Because we have the database, we want to run multiple containers (2 services)
+    - The Mongo database container must be running already for the app to work
+    - For the app, we need set the env var in the docker compose file
+Once app and database containers work (including a blank /posts page) work on how to seed the database:
+    - Manually (i.e. logging into the container and running the command), then
+    - Automatically (there are different methods for this - how many methods can you get working?)
+
+Example of docker-compose.yaml (v2)
+
+version: "2"
+services:
+    #command: node app/seeds/seed.js
+
+Note:
+    - You can use version 3 of Docker Compose
+    - Naming is case sensitive
+    - Create 2 services, one for Mongo database, one for the web app
+    - About the database service:
+        - The database will use a volume to persist Mongo DB data across container restarts 
+        - ports "27017:27017"  
+        - setup the bindIp
+
+    - About the web app service:
+        - Use the image you pushed to Docker Hub
+        - Link to mongo by setting the env var
+    
+    - If you need run a command inside your docker container, use this command:
+
+        docker exec -it <container-name> <cmd>
+
+Examples
+
+docker exec -it app node seeds/seed.js
+docker exec -it app cat /etc/mongod.conf
+```
+
+## Step 1 : make the directory 
+    ```bash
+    mkdir tech264-docker-compose/
+    ```
+
+## Step 2 : create the docker-compose-yml
+```yaml
+version: '3'
+services:
+  mongo: 
+    image: mongodb/mongodb-community-server:7.0.6-ubuntu2204  # use the mongoDB image
+    container_name : mongo_db
+    ports :
+      - "27017:27017"   # Expose MongoDB port
+    volumes:
+      - mongo-data:/data/db  # Persist mongoDB data with a docker volume
+    
+    command: ["mongod", "--bind_ip_all"]    # allow connections from other containers
+
+
+  app:
+    image: corinnai/sparta-test-app:v1-no-db    # app image
+    container_name : app
+    ports:
+      - "3000:3000"     # ensure app on port 3000
+    environment:
+      DB_HOST: "mongodb://mongo:27017/posts" # blocker wrong name for DB_HOST
+    depends_on:
+      - mongo   # ensures mongoDB starts before the app
+    
+volumes:
+  mongo-data:   #  Defines a named volume for MongoDB data
+```
+❓❓ Blocker : 
+- **MONGO_URI: "mongodb://mongo:27017/posts"** and when i check localhost:3000/posts it said **cannot get posts**
+- Solve it :  **DB_HOST: "mongodb://mongo:27017/posts"**
+
+
+## Step 3 : run docker-compose commands
+```bash
+docker-compose up -d
+```
+
+![alt text](images/app-docker-compose.jpg)
+
+## Step 4 : check if the containers are running:
+```bash
+docker-compose ps
+```
+
+![alt text](images/docker-compose-ps.jpg)
+
+
+##  Step 5: Manually Seed the Database
+- Run the following command to access the app container and execute the seeding script manually:    
+    ```bash
+    docker exec -it tech264-docker-compose-app-1  node seeds/seed.js
+    # docker exec -it <app-container-name> node /seeds/seed.js
+    ```
+
+    ![alt text](images/docker-compose-seeded.jpg)
+
+
+- Optional:
+    - Add a 'sleep' command within your command line to give the database time to be ready for seeding.
+        ```bash
+        command: sh -c "sleep 10 && node seeds/seed.js && npm start"
+        ```
+## Step 6 : automatically seed the database 
+1. Open docker-compose.yml and update the command section under the app service:
+
+    ```bash
+    version: '3'
+    services:
+    mongo: 
+        image: mongodb/mongodb-community-server:7.0.6-ubuntu2204
+        container_name: mongo_db
+        ports :
+        - "27017:27017"
+        volumes:
+        - mongo-data:/data/db
+        
+        command: ["mongod", "--bind_ip_all"]
+
+
+    app:
+        image: corinnai/sparta-test-app:v1-no-db
+        container_name: app
+        ports:
+        - "3000:3000"
+        environment:
+        DB_HOST: "mongodb://mongo:27017/posts"
+        depends_on:
+        - mongo 
+        command: ["sh", "-c", "node seeds/seed.js && node app.js"]
+    volumes:
+    mongo-data:
+    ```
+
+2. Save the docker-compose.yml file and restart your containers to apply this change.
+    ```bash
+    docker-compose down  # Stops and removes all containers
+    docker-compose up -d  # Starts containers in detached mode with the updated configuration
+    ```
+
+![alt text](images/app-front.jpg)
+
+![alt text](images/app-back.jpg)
