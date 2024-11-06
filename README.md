@@ -763,7 +763,7 @@ services:
 volumes:
   mongo-data:   #  Defines a named volume for MongoDB data
 ```
-❓❓ Blocker : 
+❓❓ **Blocker** : 
 - **MONGO_URI: "mongodb://mongo:27017/posts"** and when i check localhost:3000/posts it said **cannot get posts**
 - Solve it :  **DB_HOST: "mongodb://mongo:27017/posts"**
 
@@ -793,11 +793,7 @@ docker-compose ps
     ![alt text](images/docker-compose-seeded.jpg)
 
 
-- Optional:
-    - Add a 'sleep' command within your command line to give the database time to be ready for seeding.
-        ```bash
-        command: sh -c "sleep 10 && node seeds/seed.js && npm start"
-        ```
+
 ## Step 6 : automatically seed the database 
 1. Open docker-compose.yml and update the command section under the app service:
 
