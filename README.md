@@ -731,9 +731,9 @@ docker exec -it app cat /etc/mongod.conf
 ```
 
 ## Step 1 : make the directory 
-    ```bash
-    mkdir tech264-docker-compose/
-    ```
+ ```bash
+mkdir tech264-docker-compose/
+```
 
 ## Step 2 : create the docker-compose-yml
 ```yaml
